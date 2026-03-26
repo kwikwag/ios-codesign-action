@@ -1,0 +1,47 @@
+name: iOS Code Sign Action
+description: Generate and install iOS provisioning profiles via App Store Connect API
+runs:
+  using: node20
+  main: dist/index.js
+
+inputs:
+  api-key-id:
+    description: App Store Connect API Key ID
+    required: true
+  api-key-issuer-id:
+    description: App Store Connect Issuer ID
+    required: true
+  api-key-p8:
+    description: Contents of the App Store Connect .p8 private key
+    required: true
+  certificate-p12-base64:
+    description: Base64 encoded .p12 distribution certificate
+    required: true
+  certificate-password:
+    description: Password for the .p12 certificate
+    required: true
+  keychain-path:
+    description: Path to create temporary keychain
+    required: false
+    default: $RUNNER_TEMP/app-signing.keychain-db
+  project-path:
+    description: Path to .xcworkspace or .xcodeproj
+    required: true
+  scheme:
+    description: Xcode scheme name
+    required: true
+  distribution-method:
+    description: app-store, ad-hoc, or development
+    required: false
+    default: app-store
+  team-id:
+    description: Apple Team ID
+    required: true
+  min-profile-validity-days:
+    description: Renew profiles expiring within this many days
+    required: false
+    default: '7'
+
+outputs:
+  keychain-path:
+    description: Path to the created keychain
